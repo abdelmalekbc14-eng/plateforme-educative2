@@ -1,0 +1,14 @@
+Django
+djangorestframework
+djangorestframework-simplejwt
+pika
+requests
+gunicorn
+psycopg2-binary
+consul
+python-dotenv
+pytest
+pytest-django
+pytest-cov
+coverage
+flake8
