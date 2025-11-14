@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--configFile=/etc/traefik/traefik.yaml"
+    ports:
+      - "80:80" # HTTP
+      - "8080:8080" # Dashboard
+    volumes:
+      - ./traefik.yaml:/etc/traefik/traefik.yaml
+    depends_on:
+      - consul
+      - rabbitmq
+
+  consul:
+    image: hashicorp/consul:1.15
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    command: "agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
