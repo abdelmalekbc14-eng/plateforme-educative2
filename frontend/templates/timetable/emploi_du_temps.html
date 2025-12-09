@@ -1,0 +1,86 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Mon emploi du temps{% endblock %}
+
+{% block content %}
+<style>
+    /* Table styles */
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .styled-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>
+
+<h2>Mon emploi du temps</h2>
+
+{% if user.role == 'TEACHER' %}
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'add_seance_page' %}" class="search-button"
+        style="text-decoration: none; display: inline-block; background-color: #3498db;">
+        + Planifier une séance
+    </a>
+</div>
+{% endif %}
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Cours</th>
+            <th>Type</th>
+            <th>Date début</th>
+            <th>Date fin</th>
+            <th>Salle</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in seances %}
+        <tr>
+            <td>{{ s.cours_titre }}</td>
+            <td>{{ s.type }}</td>
+            <td>{{ s.date_debut }}</td>
+            <td>{{ s.date_fin }}</td>
+            <td>{{ s.salle }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align: center;">Aucune séance à venir.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if user.role == "TEACHER" %}
+<p>Vous visualisez les séances que vous avez planifiées.</p>
+{% else %}
+<p>Voici les séances des cours auxquels vous êtes inscrit.</p>
+{% endif %}
+
+{% endblock %}

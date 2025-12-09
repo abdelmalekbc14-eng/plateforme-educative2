@@ -1,0 +1,102 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Mes cours{% endblock %}
+
+{% block content %}
+<style>
+    /* Table styles */
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .styled-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+
+    /* Search form styles */
+    .search-form {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 300px;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        background-color: #009879;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .search-button:hover {
+        background-color: #007f67;
+    }
+</style>
+
+<h2>Mes cours </h2>
+
+<form method="GET" class="search-form">
+    <input type="text" name="q" class="search-input" placeholder="Rechercher dans mes cours..."
+        value="{{ request.GET.q|default:'' }}">
+    <button type="submit" class="search-button">Rechercher</button>
+</form>
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Niveau</th>
+            <th>Catégorie</th>
+            <th>Professeur</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in cours_list %}
+        <tr>
+            <td><a href="{% url 'page_detail_cours' c.id %}"
+                    style="text-decoration: none; color: #2980b9; font-weight: bold;">{{ c.titre }}</a></td>
+            <td>{{ c.niveau }}</td>
+            <td>{{ c.categorie }}</td>
+            <td>{{ c.prof_prenom }} {{ c.prof_nom }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="text-align: center;">Aucun cours accepté pour le moment.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
