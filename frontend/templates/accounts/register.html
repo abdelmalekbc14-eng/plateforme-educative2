@@ -1,0 +1,61 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Inscription - EduPlatform{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 2rem auto;">
+    <div class="card fade-in">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="color: var(--primary); margin-bottom: 0.5rem;">Créer un compte</h2>
+            <p style="color: var(--text-muted); margin: 0;">Rejoignez notre communauté d'apprentissage</p>
+        </div>
+
+        {% if error %}
+        <div
+            style="background-color: #FEE2E2; color: #DC2626; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem;">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label for="prenom">Prénom</label>
+                    <input type="text" id="prenom" name="prenom" placeholder="Jean" required>
+                </div>
+                <div>
+                    <label for="nom">Nom</label>
+                    <input type="text" id="nom" name="nom" placeholder="Dupont" required>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label for="email">Adresse Email</label>
+                <input type="email" id="email" name="email" placeholder="jean.dupont@univ.fr" required>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="•••••••• (min 6 caractères)" required
+                    minlength="6">
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: -0.5rem;">Le mot de passe doit
+                    contenir au moins 6 caractères.</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                S'inscrire gratuitement
+            </button>
+        </form>
+
+        <div style="margin-top: 1.5rem; text-align: center; border-top: 1px solid #F3F4F6; padding-top: 1.5rem;">
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Déjà inscrit ?
+                <a href="{% url 'login' %}" style="color: var(--primary); font-weight: 600; text-decoration: none;">Se
+                    connecter</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

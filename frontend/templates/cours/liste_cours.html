@@ -1,0 +1,200 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Catalogue des cours{% endblock %}
+
+{% block content %}
+<style>
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+
+    .search-container {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .search-input {
+        margin-bottom: 0;
+        /* Override default */
+        border-radius: 99px;
+        padding-left: 1.5rem;
+    }
+
+    .btn-search {
+        border-radius: 99px;
+        padding: 0 2rem;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    /* Grid Layout */
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+
+    .course-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+        border: 1px solid #F3F4F6;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .card-header {
+        height: 120px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.5rem;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-header.tech {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    }
+
+    .card-header.math {
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    }
+
+    .card-header.lit {
+        background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+    }
+
+    .category-badge {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(4px);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        align-self: flex-start;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .course-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        color: var(--text-main);
+        line-height: 1.4;
+    }
+
+    .course-meta {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .prof-name {
+        font-weight: 500;
+        color: var(--primary);
+    }
+
+    .card-footer {
+        padding-top: auto;
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        border-top: 1px solid #F3F4F6;
+        padding-top: 1rem;
+    }
+
+    .level-badge {
+        background-color: #F3F4F6;
+        color: #374151;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="header-section">
+    <div>
+        <h2>Explorer les cours</h2>
+        <p style="color: var(--text-muted);">Découvrez de nouvelles compétences parmi notre catalogue.</p>
+    </div>
+
+    {% if user.role == 'TEACHER' %}
+    <div>
+        <a href="{% url 'create_cours_page' %}" class="btn btn-primary">
+            + Créer un cours
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<form method="GET" style="margin-bottom: 3rem;">
+    <div class="search-container">
+        <input type="text" name="q" class="search-input" placeholder="Rechercher Python, Réseau, Math..."
+            value="{{ request.GET.q|default:'' }}">
+        <button type="submit" class="btn-search">Rechercher</button>
+    </div>
+</form>
+
+<div class="course-grid">
+    {% for c in cours_list %}
+    <a href="{% url 'page_detail_cours' c.id %}" class="course-card">
+        <div class="card-header">
+            <span class="category-badge">{{ c.categorie }}</span>
+        </div>
+        <div class="card-body">
+            <h3 class="course-title">{{ c.titre }}</h3>
+            <div class="course-meta">
+                <span>Par</span>
+                <span class="prof-name">{{ c.prof_prenom }} {{ c.prof_nom }}</span>
+            </div>
+
+            <div class="card-footer">
+                <span class="level-badge">{{ c.niveau }}</span>
+                <span>{{ c.date_creation|date:"d M Y" }}</span>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-muted);">
+        <p style="font-size: 1.2rem;">Aucun cours trouvé pour votre recherche.</p>
+        <a href="{% url 'page_liste_cours' %}" style="color: var(--primary); font-weight: 600;">Voir tout le
+            catalogue</a>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

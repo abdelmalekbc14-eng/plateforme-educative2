@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Plateforme Éducative{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338ca;
+            --secondary: #10B981;
+            --bg-body: #F3F4F6;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.95);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
+        }
+
+        nav .links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        nav .links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        nav .links a:hover {
+            color: var(--primary);
+        }
+
+        nav .links .logout-btn {
+            background-color: #FEE2E2;
+            color: #EF4444;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        nav .links .logout-btn:hover {
+            background-color: #FECACA;
+            color: #DC2626;
+        }
+
+        nav .links .auth-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        nav .links .auth-btn:hover {
+            color: var(--white);
+            background-color: var(--primary-dark);
+        }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        /* Common Elements */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.875rem;
+            margin-bottom: 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <nav>
+        <a href="{% url 'page_liste_cours' %}" style="text-decoration:none;">
+            <div class="logo">EduPlatform</div>
+        </a>
+
+        <div class="links">
+            {% if user.is_authenticated %}
+            <a href="{% url 'page_liste_cours' %}">Cours</a>
+            {% if user.role == 'TEACHER' %}
+            <a href="{% url 'gerer_inscriptions_page' %}">Gestion</a>
+            {% endif %}
+            <a href="{% url 'page_mes_cours' %}">Mes Apprentissages</a>
+            <a href="{% url 'page_emploi_du_temps' %}">Planning</a>
+
+            <span style="color: var(--text-muted); font-size: 0.9rem; margin-right: 1rem;">
+                {{ user.prenom }}
+                {% if user.role == 'TEACHER' %} (Prof){% endif %}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">Déconnexion</a>
+            {% else %}
+            <a href="{% url 'login' %}">Connexion</a>
+            <a href="{% url 'register' %}" class="auth-btn">Inscription</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="content fade-in">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+        &copy; 2025 EduPlatform. Made with &hearts; for Students.
+    </footer>
+
+</body>
+
+</html>
