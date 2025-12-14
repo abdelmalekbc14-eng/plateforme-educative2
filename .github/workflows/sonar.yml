@@ -1,0 +1,45 @@
+name: CI + SonarCloud
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  initiation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initiation
+        run: echo "CI started ✅"
+
+  tests-unitaires:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tests (placeholder)
+        run: |
+          echo "⚠️ Ajoute ici ta commande de tests"
+          echo "Exemples :"
+          echo " - npm ci && npm test"
+          echo " - mvn -B test"
+          echo " - gradle test"
+          echo " - pytest"
+
+  qualite-du-code:
+    runs-on: ubuntu-latest
+    needs: [ initiation, tests-unitaires ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # important pour Sonar (historique)
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
