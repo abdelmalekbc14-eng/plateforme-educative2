@@ -5,7 +5,7 @@ pika
 requests
 gunicorn
 psycopg2-binary
-consul
+python-consul2
 python-dotenv
 pytest
 pytest-django
